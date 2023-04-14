@@ -67,7 +67,6 @@ class Worker:
 
     def process_column(self):
         for drid_idx, drid in enumerate(self.column.drids):
-            print(drid)
             updated_drid = copy.deepcopy(drid)
 
             for cell_key, cell_info in drid.cell_dict.items():
