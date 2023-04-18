@@ -68,3 +68,13 @@ Here is a brief description of the main classes and functions:
 - display_volumetric_rendering: Displays a 3D volumetric rendering of the vtkImageData.
 - random_cell_generator: Generates random values for cell properties.
 - initialize_cells: Initializes cell instances in a column with random properties.
+
+### How can NDCA be useful in understanding cortical information processing?
+
+Below you will find an example 3D grid automata created with NDCA. Notice how the patterns on the surface and in the depths of the column is not the same. 
+With NDCA, it is possible to observe/simulate these kind of phenomena, which might help with decoding the surface electrode recordings.
+
+![Slayt1](https://user-images.githubusercontent.com/16266287/232742394-78934107-c92e-4e7d-a3fc-a88446f6a2a7.PNG)
+![Slayt2](https://user-images.githubusercontent.com/16266287/232742418-11114eca-355c-4ca0-bc9f-bfc0779b2522.PNG)
+![Slayt3](https://user-images.githubusercontent.com/16266287/232742437-22a71054-a84d-4b7d-85c5-150abf673b50.PNG)
+
