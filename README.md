@@ -29,6 +29,8 @@ With NDCA, it is possible to observe/simulate these kind of phenomena, which mig
 
 This kind of data can be used for generating fake data for surface electrode signal analysis researchers, and try generating algorithms to interpolate what is going on in the depths of the piece of cortex that we listen to.
 
+![cortical_colum_modified](https://user-images.githubusercontent.com/16266287/232747029-a1363f37-04b9-4790-809c-9cbe1f3252be.png)
+
 ![Slayt1](https://user-images.githubusercontent.com/16266287/232742394-78934107-c92e-4e7d-a3fc-a88446f6a2a7.PNG)
 ![Slayt2](https://user-images.githubusercontent.com/16266287/232742418-11114eca-355c-4ca0-bc9f-bfc0779b2522.PNG)
 ![Slayt3](https://user-images.githubusercontent.com/16266287/232742437-22a71054-a84d-4b7d-85c5-150abf673b50.PNG)
