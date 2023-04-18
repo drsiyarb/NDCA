@@ -20,7 +20,7 @@ Please e mail me at: siyarbahadir@gmail.com, if you have any questions regarding
 ![Cortical_Columns](https://user-images.githubusercontent.com/16266287/232743317-91e6c51e-089e-452a-9394-433b38fa5949.jpg)
 ![RUH_PMH](https://user-images.githubusercontent.com/16266287/232743356-b550cf02-42de-43b3-82a5-604f897e1aa3.jpg)
 
-A cortical column is a proposed as "most basic unit of computation" in human brain, with this project, I aim to model a cortical column as a representative volume element, and then simulating 150.000 of them together connected together with a human connectivity graph, and get a "surface" and "depth" recordings of the "simulated cortex".
+A cortical column is a proposed as "most basic unit of computation" in human brain, with this program, I aim to model a cortical column as a representative volume element, and then simulate 150.000 of them together connected together with a human connectivity graph, and get a "surface" and "depth" recordings of the "simulated cortex".
 
 ### How can NDCA be useful in understanding cortical information processing?
 
