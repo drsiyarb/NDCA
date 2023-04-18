@@ -16,6 +16,23 @@ and see how they interact with each other; in the hopes of understanding the cha
 better.
 
 Please e mail me at: siyarbahadir@gmail.com, if you have any questions regarding the tool and bug fixes.
+### What is a cortical column?
+![Cortical_Columns](https://user-images.githubusercontent.com/16266287/232743317-91e6c51e-089e-452a-9394-433b38fa5949.jpg)
+![RUH_PMH](https://user-images.githubusercontent.com/16266287/232743356-b550cf02-42de-43b3-82a5-604f897e1aa3.jpg)
+
+A cortical column is a proposed as "most basic unit of computation" in human brain, with this project, I aim to model a cortical column as a representative volume element, and then simulating 150.000 of them together connected together with a human connectivity graph, and get a "surface" and "depth" recordings of the "simulated cortex".
+
+### How can NDCA be useful in understanding cortical information processing?
+
+Below you will find an example 3D grid automata created with NDCA. Notice how the patterns on the surface and in the depths of the column is not the same. 
+With NDCA, it is possible to observe/simulate these kind of phenomena, which might help with decoding the surface electrode recordings.
+
+This kind of data can be used for generating fake data for surface electrode signal analysis researchers, and try generating algorithms to interpolate what is going on in the depths of the piece of cortex that we listen to.
+
+![Slayt1](https://user-images.githubusercontent.com/16266287/232742394-78934107-c92e-4e7d-a3fc-a88446f6a2a7.PNG)
+![Slayt2](https://user-images.githubusercontent.com/16266287/232742418-11114eca-355c-4ca0-bc9f-bfc0779b2522.PNG)
+![Slayt3](https://user-images.githubusercontent.com/16266287/232742437-22a71054-a84d-4b7d-85c5-150abf673b50.PNG)
+
 
 ### Documentation:
 
@@ -69,12 +86,4 @@ Here is a brief description of the main classes and functions:
 - random_cell_generator: Generates random values for cell properties.
 - initialize_cells: Initializes cell instances in a column with random properties.
 
-### How can NDCA be useful in understanding cortical information processing?
-
-Below you will find an example 3D grid automata created with NDCA. Notice how the patterns on the surface and in the depths of the column is not the same. 
-With NDCA, it is possible to observe/simulate these kind of phenomena, which might help with decoding the surface electrode recordings.
-
-![Slayt1](https://user-images.githubusercontent.com/16266287/232742394-78934107-c92e-4e7d-a3fc-a88446f6a2a7.PNG)
-![Slayt2](https://user-images.githubusercontent.com/16266287/232742418-11114eca-355c-4ca0-bc9f-bfc0779b2522.PNG)
-![Slayt3](https://user-images.githubusercontent.com/16266287/232742437-22a71054-a84d-4b7d-85c5-150abf673b50.PNG)
 
