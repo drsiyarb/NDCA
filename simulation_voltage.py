@@ -1,9 +1,10 @@
-import numpy as np
 import copy
-from cell import Cell
+
 import numpy as np
 import vtk
 from vtk.util import numpy_support
+
+from cell import Cell
 
 
 def calculate_neighborhood_activation_score(column, cell_info, drid_idx):

@@ -1,4 +1,4 @@
-from data_structures import Column, Grid, create_cell_dict, add_local_neighbors
+from data_structures import Column, Grid, add_local_neighbors, create_cell_dict
 
 
 def normalize_io_biases(column):
