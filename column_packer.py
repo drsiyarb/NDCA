@@ -1,3 +1,5 @@
+import random
+
 from data_structures import Column, Grid, add_local_neighbors, create_cell_dict
 
 
@@ -11,9 +13,6 @@ def normalize_io_biases(column):
     for drid in column.drids:
         drid.grid.input_bias *= normalization_factor
         drid.grid.output_bias *= normalization_factor
-
-
-import random
 
 
 def populate_column(column):
