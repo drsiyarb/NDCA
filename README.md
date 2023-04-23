@@ -72,6 +72,33 @@ These properties play crucial roles in calculating cell activation, similar to h
 
 The Drid class acts as a container for a Grid object and its associated cell dictionary. It simplifies handling the grid and its cells during simulations.
 
+## Cell Dictionary and Drid Setup
+
+Creating a cell dictionary is an essential step in setting up the simulation. The cell dictionary holds information about each cell within a Drid, which will be used during calculations, connections establishment, and updating states. By associating cells with keys (e.g., 'cell1', 'cell2', etc.), we can quickly access specific cells when needed.
+
+The `create_cell_dict` function generates a cell dictionary for a given Grid object. It iterates through all indices in the Grid and assigns unique keys to each corresponding cell index. This initial setup only includes the cell's location, but we'll soon expand it with additional properties such as local neighbors and connection information.
+
+Once we have created the cell dictionary, we pass it to the Drid class constructor along with its associated Grid object. This way, every Drid contains both the grid structure and the data necessary to connect cells and run simulations on them.
+
+In order for the cells to interact with their surroundings, we need to identify their local neighbors. Using the `get_local_neighbors` function, we find adjacent cell indices for any given cell within a Drid's array. However, simply having a list of neighbor indices isn't enough – we also need to link this information back into our cell dictionary.
+
+That's where `add_local_neighbors` comes into play. This function takes a Drid object containing a grid array and the accompanying cell dictionary (created earlier) and updates every entry in that dictionary by appending local neighbors' indices. With this updated representation of cells in our Drids, we now have complete knowledge of each cell's immediate environment.
+
+Think of these additions like giving your Lego occupants little contact books filled with phone numbers of their neighboring friends. Now they're ready to talk to each other!
+
+By systematically creating multi-dimensional grids (Grid objects), generating dictionaries containing cellular properties (using create_cell_dict), finding local neighbors (get_local_neighbors), and updating the cell dictionaries (add_local_neighbors), we establish a solid foundation for simulating complex interactions within and between Drids that form our cortical columns.
+
+The cell dictionary of a Drid contains the following information for each cell:
+
+1. **cell**: An instance of the Cell class, holding properties like voltage, activation_state, and excitability.
+2. **cell_index**: The index (position) of the cell within the Drid's multi-dimensional grid array.
+3. **local_neighbors**: A list of adjacent cell indices that are considered local neighbors to the current cell in the same Drid.
+4. **role**: A string representing the role of the cell (e.g., 'nascent', 'signaller', 'receiver', or 'radio').
+5. **code**: A tuple representing the input/output connection code for that specific role (e.g., (0, 0), (0, 1), (1, 0), or (1, 1)).
+6. **input_non_local**: A list of non-local input connections to other cells in different Drids within the same Column.
+7. **output_non_local**: A list of non-local output connections from this cell to other cells in different Drids within the same Column.
+
+Each entry in the cell dictionary is associated with a unique key such as 'cell1', 'cell2', etc., making it easy to access and update specific cells as needed during simulations.
 ## Cell Generation and Initialization
 
 Each cell within a Drid is represented by an instance of the Cell class, which has three main properties:
