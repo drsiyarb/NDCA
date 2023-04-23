@@ -36,56 +36,91 @@ This kind of data can be used for generating fake data for surface electrode sig
 ![Slayt3](https://user-images.githubusercontent.com/16266287/232742437-22a71054-a84d-4b7d-85c5-150abf673b50.PNG)
 
 
-### Documentation:
+# Cortical Column Simulation
 
-This codebase revolves around simulating a cellular automata model using a grid system. The main components of the codebase are classes, functions, and modules for creating, populating, and processing grids of cells with various properties.
+This project aims to simulate the behavior of a cortical column in the human cortex, which can be used as a representative volume element for constructing a whole-brain simulation. By connecting 150,000 of these columns based on the human connectome data, we can study the emergent properties and potential applications of realistic large-scale brain networks.
 
-The main classes and their hierarchy are as follows:
+## Overview
 
-- Grid
-  - Drid
-    - Column
-      - Worker
-        - classical_CA_worker
-      - ResultColumn
+A cortical column is an intricate structure made up of interconnected cells that work together to process information within the brain. In this project, we represent cortical columns as stacks of multi-dimensional grid structures called Drids. Each Drid serves as a layer within the column, containing cells with various roles, connections to local and non-local neighbors, and dynamic properties like activation state and excitability.
 
-The main functions and their hierarchy are as follows:
+The core functionality of the code includes:
 
-- create_cell_dict
-  - get_local_neighbors
-- add_local_neighbors
-- normalize_io_biases
-- populate_column
-- establish_connections
-- create_random_column
-  - run_simulation
-    - calculate_neighborhood_activation_score
-    - count_active_inactive_neighbors
-  - save_combined_vti_files
-  - display_volumetric_rendering
-  - random_cell_generator
-  - initialize_cells
+1. Defining Grid and Drid classes to create multi-dimensional grid structures.
+2. Generating cells with random initial states and assigning them to Drids.
+3. Populating a Column object by stacking Drids as layers.
+4. Establishing connections between cells within the same Drid or across different Drids in a Column.
+5. Running cellular automata simulations using different worker classes (Worker and classical_CA_worker), which update cell states based on their own criteria.
 
-Here is a brief description of the main classes and functions:
+Throughout the documentation, we'll provide real-world examples, analogies, and humor to keep it engaging while maintaining accuracy in conveying complex concepts.
 
-- Grid: Represents a grid of cells with various properties such as the decay value, input/output biases, and thresholds.
-- Drid: A wrapper around a Grid object and its corresponding cell dictionary.
-- Column: Represents a collection of Drids along with the number of input/output and radio cells.
-- Worker: A class responsible for processing the columns in the simulation.
-- classical_CA_worker: A subclass of Worker tailored for classical cellular automata.
-- ResultColumn: A class responsible for storing the simulation results.
+## Grid Class
 
-- create_cell_dict: Creates a cell dictionary for a given grid.
-- get_local_neighbors: Returns the local neighbors of a given cell in the grid.
-- add_local_neighbors: Adds the local neighbors to the cell dictionary of a given grid.
-- normalize_io_biases: Normalizes the input and output biases in a column.
-- populate_column: Assigns roles and connection codes to the cells in a column.
-- establish_connections: Establishes connections between cells in a column.
-- create_random_column: Creates a random column with specified parameters.
-- run_simulation: Runs the simulation for a specified number of frames and returns the result.
-- save_combined_vti_files: Saves the combined activation grids as VTI files.
-- display_volumetric_rendering: Displays a 3D volumetric rendering of the vtkImageData.
-- random_cell_generator: Generates random values for cell properties.
-- initialize_cells: Initializes cell instances in a column with random properties.
+The Grid class represents a multi-dimensional grid on which cellular automata can be run. It has several properties:
+
+- decay_value: The rate at which cell voltage decreases after sending an impulse.
+- lower_tresh: The lower threshold for a cell's voltage needed for it to become excitable again after activation.
+- upper_tresh: The upper threshold for a cell's voltage needed for it to activate (akin to neuron firing).
+- density: A property related to how crowded the grid is with connections.
+- input_bias: A factor for determining the number of input connections a Drid will have when packed into a Column.
+- output_bias: A factor for determining the number of output connections a Drid will have when packed into a Column.
+- radio_bias: A factor for determining the number of radio connections (both input and output) a Drid will have when packed into a Column.
+
+These properties play crucial roles in calculating cell activation, similar to how neurons fire in the brain.
+
+## Drid Class
+
+The Drid class acts as a container for a Grid object and its associated cell dictionary. It simplifies handling the grid and its cells during simulations.
+
+## Cell Generation and Initialization
+
+Each cell within a Drid is represented by an instance of the Cell class, which has three main properties:
+
+- voltage: The cell's current voltage level.
+- activation_state: The activation state of the cell (0 - inactive or 1 - active).
+- excitability: Indicates whether the cell can receive impulses or not (0 - unexcitable or 1 - excitable).
+
+We randomly generate initial values for these properties using `random_cell_generator`. We then use `initialize_cells` to create instances of Cell objects and assign them to each cell location in every Drid in a Column.
+
+## Establishing Connections
+
+While stacking up Drids to form columns, we need to establish their relationships based on input/output biases. Connections between cells play a crucial role in propagating the signals within and across Drids. The `populate_column` function assigns random roles to each cell in the Drids, which include:
+
+- Nascent: A cell that only considers local neighbors during calculations.
+- Signaller: A cell that can send signals to non-local neighbors.
+- Receiver: A cell that can receive signals from non-local neighbors.
+- Radio: A cell that can both send and receive signals to/from non-local neighbors.
+
+These roles determine how a cell behaves within its Drid, as well as its interactions with other cells in different Drids packed into the same Column. Each role is associated with a connection code (input/output) for easy identification of input and output connections.
+
+The `establish_connections` function creates random connections between cells based on their respective input/output codes. When making calculations for cellular automata, these connected cells act as if they're local neighbors even if they are in different Drids within the same Column.
+
+## Running Simulations using Worker Classes
+
+We have defined two types of worker classes to run simulations on columns:
+
+1. **Worker**: This class processes the column by updating cell activation states and excitability based on their voltage, activation state, and other properties.
+
+2. **classical_CA_worker**: This class processes the column like a classical cellular automaton, updating cell states solely based on the number of active (alive) neighbors surrounding each cell.
+
+Both worker classes follow different rules to update the state of the cells within the column during simulation runs.
+
+## Simulation Execution
+
+The `run_simulation` function executes the cellular automata simulation for a specified number of frames using classical_CA_worker. It takes three parameters:
+
+- column: The Column object containing stacked Drids.
+- num_frames: Total number of frames (iterations) for which the simulation will run.
+- max/min: Minimum and maximum limits for the number of active neighbors to determine cell activation state.
+
+During the simulation, a cell survives if its number of active neighbors falls within the min-max range. Otherwise, it dies due to overpopulation or underpopulation.
+
+The function updates the cell states for each frame and stores the voltage and activation grids in a ResultColumn object, which can later be used for analysis or visualization purposes.
+
+## Wrapping Up
+
+Imagine our cortical columns as skyscrapers built with Lego blocks (Drids) stacked on top of one another. Each block has its own set of tiny occupants (cells) with unique jobs, connections to other occupants in different blocks, and even their own power supply (voltage). By simulating how these occupants work together across multiple skyscrapers, we can better understand how our brains process information at a larger scale.
+
+You now have a grasp on how to simulate cortical columns using cellular automata algorithms. Enjoy exploring brain dynamics and remember: keep calm and cortex on!
 
 
