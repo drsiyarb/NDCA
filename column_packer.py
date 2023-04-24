@@ -1,6 +1,6 @@
 import random
 
-from data_structures import Column, Grid, add_local_neighbors, create_cell_dict
+from data_structures import Column, Grid, Drid
 
 
 def normalize_io_biases(column):
@@ -92,15 +92,9 @@ def create_random_column(io_number, ro_number, number_of_drids, grid_dimension,
         # Create a Grid instance
         grid = Grid(grid_dimension, grid_size, decay_value, lower_tresh,
                     upper_tresh, density, input_bias, output_bias, radio_bias)
-
-        # Create a GridWithDict instance
-        grid_with_dict = create_cell_dict(grid)
-
-        # Add local neighbors
-        add_local_neighbors(grid_with_dict)
-
+        drid = Drid(grid)
         # Add the GridWithDict instance to the Column
-        column.add_drid(grid_with_dict)
+        column.add_drid(drid)
 
     # Normalize input and output biases
     normalize_io_biases(column)

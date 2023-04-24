@@ -14,7 +14,7 @@ def calculate_neighborhood_activation_score(column, cell_info, drid_idx):
     # Calculate the neighborhood activation score for local neighbors
     activation_score = 0
     for neighbor_index in local_neighbors:
-        neighbor_key = f"cell{np.ravel_multi_index(neighbor_index, drid.grid.array.shape, order='C') + 1}"
+        neighbor_key = f"cell{np.ravel_multi_index(neighbor_index, drid.grid.array.shape, mode='wrap', order='C')}"
         neighbor_cell = drid.cell_dict[neighbor_key][0]
         activation_score += neighbor_cell.activation_state
 
