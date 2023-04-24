@@ -69,4 +69,4 @@ class Column:
     def process_drids_one_by_one(self, operation):
         for drid in self.drids:
             operation(drid)
-            print(f"Processed {drid}")
+            logging.debug(f"Processed {drid}")

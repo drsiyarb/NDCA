@@ -179,7 +179,7 @@ def numpy_to_vtk_image_data(numpy_array):
 def save_combined_vti_files(result_column,
                             num_frames,
                             output_folder,
-                            offset=10):
+                            offset):
     num_drids = len(result_column.voltage_grids)
     first_grid_shape = result_column.voltage_grids[0][0].shape
 

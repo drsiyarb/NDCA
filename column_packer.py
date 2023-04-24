@@ -6,7 +6,7 @@ from data_structures import Column, Grid, Drid
 def normalize_io_biases(column):
     total_input_bias = sum(drid.grid.input_bias for drid in column.drids)
     total_output_bias = sum(drid.grid.output_bias for drid in column.drids)
-    print(total_input_bias, total_output_bias)
+    logging.debug(total_input_bias, total_output_bias)
     total_io_bias = total_input_bias + total_output_bias
     normalization_factor = 1 / total_io_bias
 

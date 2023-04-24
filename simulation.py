@@ -127,7 +127,7 @@ class classical_CA_worker:
 
     def process_column_CA_worker(self):
         for drid_idx, drid in enumerate(self.column.drids):
-            print(drid)
+            logging.debug("drid_idx, drid:", drid_idx, drid)
             updated_drid = copy.deepcopy(drid)
             for cell_key, cell_info in drid.cell_dict.items():
                 cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local = cell_info
