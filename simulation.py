@@ -1,4 +1,5 @@
 import copy
+import logging
 
 import numpy as np
 import vtk

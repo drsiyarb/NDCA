@@ -43,7 +43,7 @@ from simulation_voltage import (
 @click.option(
     "--grid-dimension",
     "-g",
-    default=10,
+    default=3,
     show_default=True,
     help="dimensionality of each grid",
 )
@@ -81,14 +81,14 @@ def main(io_number, ro_number, drid_number, grid_dimension, grid_size, frame_num
     )
     logging.info("Run at: %s", datetime.datetime.now())
     logging.info("Log level set to: %r", log_level)
-    logging.info(f"{io_number}, {ro_number}, {drid_number}, {grid_dimension}, {grid_size}, {frame_number}, {rendering_offset}")
+    logging.info(f"{io_number = }, {ro_number = }, {drid_number = }, {grid_dimension = }, {grid_size = }, {frame_number = }, {rendering_offset = }")
     random_column = create_random_column(
         io_number, ro_number, drid_number, grid_dimension, grid_size
     )
 
     initialize_cells(random_column)
 
-    result_column = run_simulation(random_column, num_frames)
+    result_column = run_simulation(random_column, frame_number)
 
     save_combined_vti_files(
         result_column,

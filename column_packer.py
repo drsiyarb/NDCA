@@ -1,4 +1,5 @@
 import random
+import logging
 
 from data_structures import Column, Grid, Drid
 
