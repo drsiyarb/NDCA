@@ -52,7 +52,6 @@ The core functionality of the code includes:
 4. Establishing connections between cells within the same Drid or across different Drids in a Column.
 5. Running cellular automata simulations using different worker classes (Worker and classical_CA_worker), which update cell states based on their own criteria.
 
-Throughout the documentation, we'll provide real-world examples, analogies, and humor to keep it engaging while maintaining accuracy in conveying complex concepts.
 
 ## Grid Class
 
