@@ -80,8 +80,8 @@ def main(io_number, ro_number, drid_number, grid_dimension, grid_size, frame_num
         level=log_level,
     )
     logging.info("Run at: %s", datetime.datetime.now())
-    logging.info("Log level set to %r", log_level)
-
+    logging.info("Log level set to: %r", log_level)
+    logging.info(f"{io_number}, {ro_number}, {drid_number}, {grid_dimension}, {grid_size}, {frame_number}, {rendering_offset}")
     random_column = create_random_column(
         io_number, ro_number, drid_number, grid_dimension, grid_size
     )
