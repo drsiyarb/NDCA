@@ -1,9 +1,12 @@
-import numpy as np
 import copy
-from cell import Cell
+import logging
+
 import numpy as np
 import vtk
 from vtk.util import numpy_support
+
+from cell import Cell
+
 
 def calculate_neighborhood_activation_score(column, cell_info, drid_idx):
     cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local = cell_info
@@ -25,13 +28,14 @@ def calculate_neighborhood_activation_score(column, cell_info, drid_idx):
 
     # Calculate the neighborhoodactivation score as a factor of activated cells to the total number of neighbors
     total_neighbors = len(local_neighbors) + len(input_non_local)
-    
+
     if total_neighbors == 0:
         neighborhood_activation_score = 0
     else:
         neighborhood_activation_score = activation_score / total_neighbors
 
     return neighborhood_activation_score
+
 
 def count_active_inactive_neighbors(column, cell_info, drid_idx):
     cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local = cell_info
@@ -61,7 +65,9 @@ def count_active_inactive_neighbors(column, cell_info, drid_idx):
 
     return active_neighbors, inactive_neighbors
 
+
 class Worker:
+
     def __init__(self, column):
         self.column = column
 
@@ -73,7 +79,8 @@ class Worker:
                 cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local = cell_info
 
                 # Create a copy of the cell to store the updated state
-                updated_cell = Cell(cell.voltage, cell.activation_state, cell.excitability)
+                updated_cell = Cell(cell.voltage, cell.activation_state,
+                                    cell.excitability)
 
                 # Check the cell's excitability
                 if cell.excitability == 1:
@@ -86,8 +93,9 @@ class Worker:
                             updated_cell.excitability = 0
                         else:
                             # Calculate the neighborhood activation score using the new function
-                            activation_score = calculate_neighborhood_activation_score(self.column, cell_info, drid_idx)
-                            activation_score=activation_score
+                            activation_score = calculate_neighborhood_activation_score(
+                                self.column, cell_info, drid_idx)
+                            activation_score = activation_score
 
                             # Add the activation score to the voltage
                             updated_cell.voltage += activation_score
@@ -104,38 +112,49 @@ class Worker:
                             updated_cell.excitability = 1
 
                 # Update the cell's dictionary entry with the updated cell instance
-                drid.cell_dict[cell_key] = (updated_cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local)
-            
+                drid.cell_dict[cell_key] = (updated_cell, cell_index,
+                                            local_neighbors, role, code,
+                                            input_non_local, output_non_local)
+
             self.column.drids[drid_idx] = updated_drid
 
+
 class classical_CA_worker:
+
     def __init__(self, column, max, min):
         self.column = column
-        self.max=max
-        self.min=min
+        self.max = max
+        self.min = min
 
     def process_column_CA_worker(self):
         for drid_idx, drid in enumerate(self.column.drids):
-            print(drid)
+            logging.debug("drid_idx, drid:", drid_idx, drid)
             updated_drid = copy.deepcopy(drid)
             for cell_key, cell_info in drid.cell_dict.items():
                 cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local = cell_info
 
                 # Create a copy of the cell to store the updated state
-                updated_cell = Cell(cell.voltage, cell.activation_state, cell.excitability)
-                a_n ,i_n  = count_active_inactive_neighbors(self.column, cell_info, drid_idx)
+                updated_cell = Cell(cell.voltage, cell.activation_state,
+                                    cell.excitability)
+                a_n, i_n = count_active_inactive_neighbors(
+                    self.column, cell_info, drid_idx)
 
-                if a_n>self.min and a_n<self.max:
+                if a_n > self.min and a_n < self.max:
                     updated_cell.activation_state = 1
                 else:
                     updated_cell.activation_state = 0
-                    
+
                 # Update the cell's dictionary entry with the updated cell instance
-                updated_drid.cell_dict[cell_key] = (updated_cell, cell_index, local_neighbors, role, code, input_non_local, output_non_local)
-            
+                updated_drid.cell_dict[cell_key] = (updated_cell, cell_index,
+                                                    local_neighbors, role, code,
+                                                    input_non_local,
+                                                    output_non_local)
+
             self.column.drids[drid_idx] = updated_drid
 
+
 class ResultColumn:
+
     def __init__(self):
         self.voltage_grids = {}
         self.activation_grids = {}
@@ -149,6 +168,7 @@ class ResultColumn:
         if drid_idx not in self.activation_grids:
             self.activation_grids[drid_idx] = []
         self.activation_grids[drid_idx].append(grid)
+
 
 def run_simulation(column, num_frames, max, min):
     # Initialize the Worker and ResultColumn instances
@@ -178,10 +198,12 @@ def run_simulation(column, num_frames, max, min):
 
     return result_column
 
+
 def are_grids_different(grid1, grid2, threshold=0.001):
     diff = np.abs(grid1 - grid2)
     max_diff = np.max(diff)
     return max_diff > threshold
+
 
 def numpy_to_vtk_image_data(numpy_array):
     vtk_image_data = vtk.vtkImageData()
@@ -189,21 +211,29 @@ def numpy_to_vtk_image_data(numpy_array):
     vtk_image_data.SetSpacing(1, 1, 1)
     vtk_image_data.SetOrigin(0, 0, 0)
 
-    vtk_array = numpy_support.numpy_to_vtk(numpy_array.ravel(order='F'), deep=True, array_type=vtk.VTK_FLOAT)
+    vtk_array = numpy_support.numpy_to_vtk(numpy_array.ravel(order='F'),
+                                           deep=True,
+                                           array_type=vtk.VTK_FLOAT)
     vtk_image_data.GetPointData().SetScalars(vtk_array)
 
     return vtk_image_data
 
-def save_combined_vti_files(result_column, num_frames, output_folder, offset=10):
+
+def save_combined_vti_files(result_column,
+                            num_frames,
+                            output_folder,
+                            offset=10):
     num_drids = len(result_column.activation_grids)
     first_grid_shape = result_column.activation_grids[0][0].shape
 
     for frame_idx in range(num_frames):
         # Initialize a combined 3D array with zeros, adding extra space for the offsets
-        combined_shape = (first_grid_shape[0] + (num_drids - 1) * offset, first_grid_shape[1], first_grid_shape[2])
+        combined_shape = (first_grid_shape[0] + (num_drids - 1) * offset,
+                          first_grid_shape[1], first_grid_shape[2])
         combined_array = np.zeros(combined_shape)
 
-        for drid_idx, activation_grids in result_column.activation_grids.items():
+        for drid_idx, activation_grids in result_column.activation_grids.items(
+        ):
             activation_grid = activation_grids[frame_idx]
             x_start = drid_idx * offset
             x_end = x_start + first_grid_shape[0]
@@ -212,10 +242,13 @@ def save_combined_vti_files(result_column, num_frames, output_folder, offset=10)
 
         # Convert the combined array to a vtkImageData object
         vtk_image_data = vtk.vtkImageData()
-        vtk_image_data.SetDimensions(combined_shape[0], combined_shape[1], combined_shape[2])
+        vtk_image_data.SetDimensions(combined_shape[0], combined_shape[1],
+                                     combined_shape[2])
         vtk_image_data.SetSpacing(1, 1, 1)
 
-        vtk_array = numpy_support.numpy_to_vtk(combined_array.ravel(), deep=True, array_type=vtk.VTK_FLOAT)
+        vtk_array = numpy_support.numpy_to_vtk(combined_array.ravel(),
+                                               deep=True,
+                                               array_type=vtk.VTK_FLOAT)
         vtk_array.SetName("Activation")
         vtk_image_data.GetPointData().SetScalars(vtk_array)
 
